@@ -198,6 +198,134 @@
     </div>
   </section>
 
+  <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">Where Architectures Diverge from ProtoPNet</h2>
+        <div class="content has-text-justified">
+          <p>
+            Every prototypical-parts network shares the same skeleton: an encoder turns an image into latent patches, each patch is
+            compared to a set of learned prototypes, the per-patch scores are pooled into one activation per prototype, and a linear
+            decision layer turns those activations into class logits. Architectures diverge in exactly <strong>three</strong> places
+            along this pipeline &mdash; click the arrows (or dots) below to see what changes at each one.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .pipeline-diagram { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.4rem; margin: 1.5rem 0; }
+      .pipeline-stage { border: 1px solid #dbdbdb; border-radius: 8px; padding: 0.6rem 0.9rem; background: white; text-align: center; font-size: 0.85rem; line-height: 1.3; min-width: 92px; transition: all 0.25s; }
+      .pipeline-arrow { color: #b5b5b5; font-size: 1.1rem; }
+      .pipeline-variant { border-style: dashed; }
+      .pipeline-variant.is-highlighted { border-style: solid; border-color: #363636; background: #f0f0f0; box-shadow: 0 2px 6px rgba(0,0,0,0.12); font-weight: 600; }
+    </style>
+
+    <div class="pipeline-diagram" id="pipelineDiagram">
+      <div class="pipeline-stage">Input<br><span class="is-size-7">image $X$</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-stage">Encoder<br><span class="is-size-7">$f$</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-stage">Latent patches<br><span class="is-size-7">$z_l$</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-stage pipeline-variant" data-axis="0">Distance<br><span class="is-size-7">$d(z_l,p_j)$</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-stage pipeline-variant" data-axis="1">Similarity<br><span class="is-size-7">$\sigma(d)$</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-stage pipeline-variant" data-axis="2">Pooling<br><span class="is-size-7">$a_j$</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-stage">Decision layer<br><span class="is-size-7">$h$</span></div>
+      <div class="pipeline-arrow">&rarr;</div>
+      <div class="pipeline-stage">Class logits</div>
+    </div>
+
+    <div class="columns is-vcentered is-centered">
+      <div class="column is-narrow">
+        <button class="button is-rounded is-dark mechanism-nav" id="axisPrev" aria-label="Previous axis">
+          <span class="icon"><i class="fas fa-chevron-left"></i></span>
+        </button>
+      </div>
+
+      <div class="column is-8">
+
+        <div class="box axis-panel" data-index="0">
+          <h4 class="title is-5 has-text-centered">1. Distance Function</h4>
+          <div class="content">
+            <p>How "closeness" between a latent patch and a prototype is first measured, before any conversion to a bounded score:</p>
+            <ul>
+              <li><strong>Euclidean ($L_2$):</strong> $d(z_l,p_j) = \|z_l-p_j\|_2$ &mdash; ProtoPNet, ProtoPool, ProtoGMM, MGProto, ProtoPFormer.</li>
+              <li><strong>Cosine / spherical:</strong> $d(z_l,p_j) = z_l \cdot p_j$, a dot product on the unit hypersphere &mdash; TesNet, Deformable ProtoPNet, PIP-Net, HyperPG, NonParam.</li>
+              <li><strong>Gaussian:</strong> each prototype is a distribution $\mathcal{N}(\mu_j,\sigma_j^2 I)$; distance becomes a negative log-likelihood.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="box axis-panel is-hidden" data-index="1">
+          <h4 class="title is-5 has-text-centered">2. Distance-to-Similarity Function</h4>
+          <div class="content">
+            <p>How a raw distance $d$ is converted into a bounded similarity score $\text{sim} = \sigma(d)$:</p>
+            <ul>
+              <li><strong>ProtoPNet's log-ratio:</strong> $\sigma(d) = \log\!\big(\frac{d^2+1}{d^2+\epsilon}\big)$.</li>
+              <li><strong>Cosine architectures</strong> skip this step entirely &mdash; the dot product already <em>is</em> the similarity, $\sigma = \text{id}$.</li>
+              <li><strong>Gaussian density:</strong> $S(d) = -\tfrac12 d^2 - \log Z$ (up to normalization).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="box axis-panel is-hidden" data-index="2">
+          <h4 class="title is-5 has-text-centered">3. Pooling Function</h4>
+          <div class="content">
+            <p>How per-patch similarities are aggregated into one activation $a_j$ per prototype:</p>
+            <ul>
+              <li><strong>Max pooling:</strong> $a_j = \max_{l\in L} \text{sim}(z_l,p_j)$ &mdash; used by nearly every architecture.</li>
+              <li><strong>Focal pooling</strong> (ProtoPool): $a_j = \max_{l\in L}\text{sim}(z_l,p_j) - \mathbb{E}_{l\in L}[\text{sim}(z_l,p_j)]$, subtracting the average activation to suppress background noise.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="has-text-centered mt-3" id="axisDots">
+          <span class="mechanism-dot is-active" data-index="0"></span><span class="mechanism-dot" data-index="1"></span><span class="mechanism-dot" data-index="2"></span>
+        </div>
+
+      </div>
+
+      <div class="column is-narrow">
+        <button class="button is-rounded is-dark mechanism-nav" id="axisNext" aria-label="Next axis">
+          <span class="icon"><i class="fas fa-chevron-right"></i></span>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var panels = document.querySelectorAll('.axis-panel');
+        var dots = document.querySelectorAll('#axisDots .mechanism-dot');
+        var stages = document.querySelectorAll('.pipeline-variant');
+        var current = 0;
+        function show(index) {
+          panels.forEach(function (p, i) { p.classList.toggle('is-hidden', i !== index); });
+          dots.forEach(function (d, i) { d.classList.toggle('is-active', i === index); });
+          stages.forEach(function (s) { s.classList.toggle('is-highlighted', s.getAttribute('data-axis') === String(index)); });
+          current = index;
+          if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); }
+        }
+        document.getElementById('axisPrev').addEventListener('click', function () {
+          show((current - 1 + panels.length) % panels.length);
+        });
+        document.getElementById('axisNext').addEventListener('click', function () {
+          show((current + 1) % panels.length);
+        });
+        dots.forEach(function (dot, i) {
+          dot.addEventListener('click', function () { show(i); });
+        });
+        show(0);
+      })();
+    </script>
+
+  </div>
+  </section>
+
   <section class="section" style="background-color: #f5f5f5;">
   <div class="container is-max-desktop">
 
