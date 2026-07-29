@@ -223,11 +223,13 @@
       .arrow-label.is-active { color: #fff !important; background: #363636; font-weight: 600; }
       .arrow-label.is-active:hover { background: #363636; }
       .arch-divider { border: none; border-top: 1px solid #e2e2e2; margin: 1.5rem 0.5rem 1.25rem; }
-      .axis-panel-wrap { max-width: 620px; margin: 0 auto; padding: 0 0.5rem 0.25rem; }
+      .axis-panel-wrap { max-width: 760px; margin: 0 auto; padding: 0 0.5rem 0.25rem; }
       .axis-panel p, .axis-panel li { font-size: 0.92rem; }
       .cycle-nav { display: flex; align-items: center; justify-content: center; gap: 0.65rem; margin-top: 1.4rem; }
       .cycle-chevron { background: none; border: none; cursor: pointer; font-size: 1.3rem; line-height: 1; color: #9a9a9a; padding: 0.15rem 0.4rem; border-radius: 6px; transition: all 0.15s; }
       .cycle-chevron:hover { color: #363636; background: #e8e8e8; }
+      .axis-table td, .axis-table th { vertical-align: middle; padding: 0.5rem 0.6rem; }
+      .axis-table td:nth-child(2) { white-space: nowrap; }
     </style>
 
     <div class="arch-card">
@@ -349,35 +351,117 @@
         <div class="axis-panel" data-index="0">
           <h4 class="title is-5 has-text-centered">1. Distance Function</h4>
           <div class="content">
-            <p>How "closeness" between a latent patch and a prototype is first measured, before any conversion to a bounded score:</p>
-            <ul>
-              <li><strong>Euclidean ($L_2$):</strong> $d(z_l,p_j) = \|z_l-p_j\|_2$ &mdash; ProtoPNet, ProtoPool, ProtoGMM, MGProto, ProtoPFormer.</li>
-              <li><strong>Cosine / spherical:</strong> $d(z_l,p_j) = z_l \cdot p_j$, a dot product on the unit hypersphere &mdash; TesNet, Deformable ProtoPNet, PIP-Net, HyperPG, NonParam.</li>
-              <li><strong>Gaussian:</strong> each prototype is a distribution $\mathcal{N}(\mu_j,\sigma_j^2 I)$; distance becomes a negative log-likelihood.</li>
-            </ul>
+            <p class="is-size-7 has-text-centered mb-3">How "closeness" between a latent patch and a prototype is first measured, before any conversion to a bounded score.</p>
+            <div class="table-container">
+              <table class="table is-bordered is-narrow is-fullwidth axis-table">
+                <thead><tr><th>Variant</th><th>Formula</th><th class="has-text-centered">Visual</th><th>Used by</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Euclidean</strong> ($L_2$)</td>
+                    <td>$d(z_l,p_j) = \|z_l-p_j\|_2$</td>
+                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+    <line x1="26" y1="52" x2="78" y2="20" stroke="#9a9a9a" stroke-width="1.4" stroke-dasharray="3,2"/>
+    <circle cx="26" cy="52" r="4.5" fill="#c9c9c9" stroke="#8a8a8a" stroke-width="1"/>
+    <circle cx="78" cy="20" r="4.5" fill="#3273dc" stroke="#1d5fc2" stroke-width="1"/>
+    <text x="26" y="68" font-size="9" fill="#5a5a5a" text-anchor="middle" font-style="italic">p</text>
+    <text x="78" y="12" font-size="9" fill="#1d5fc2" text-anchor="middle" font-style="italic">z</text>
+    <text x="58.0" y="34.0" font-size="10" fill="#4a4a4a" text-anchor="middle" font-style="italic">d</text>
+    </svg></td>
+                    <td class="is-size-7">ProtoPNet, ProtoPool, ProtoGMM, MGProto, ProtoPFormer</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Cosine</strong> / spherical</td>
+                    <td>$d(z_l,p_j) = z_l \cdot p_j$</td>
+                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="44" r="28" fill="none" stroke="#dcdcdc" stroke-width="1.2"/>
+    <line x1="50" y1="44" x2="75.4" y2="32.2" stroke="#3273dc" stroke-width="1.6"/>
+    <line x1="50" y1="44" x2="47.6" y2="16.1" stroke="#8a8a8a" stroke-width="1.6"/>
+    <path d="M 62.7 38.1 A 14 14 0 0 0 48.8 30.1" fill="none" stroke="#c99a1f" stroke-width="1.2"/>
+    <circle cx="50" cy="44" r="2" fill="#4a4a4a"/>
+    <circle cx="75.4" cy="32.2" r="4" fill="#3273dc" stroke="#1d5fc2" stroke-width="1"/>
+    <circle cx="47.6" cy="16.1" r="4" fill="#c9c9c9" stroke="#8a8a8a" stroke-width="1"/>
+    <text x="84.4" y="30.2" font-size="9" fill="#1d5fc2" text-anchor="middle" font-style="italic">z</text>
+    <text x="38.6" y="10.1" font-size="9" fill="#5a5a5a" text-anchor="middle" font-style="italic">p</text>
+    <text x="52" y="26" font-size="8.5" fill="#a17a10" text-anchor="middle">&#952;</text>
+    </svg></td>
+                    <td class="is-size-7">TesNet, Deformable ProtoPNet, PIP-Net, HyperPG, NonParam</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Gaussian</strong></td>
+                    <td>$\mathcal{N}(\mu_j,\sigma_j^2 I)$</td>
+                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="52" cy="44" rx="30" ry="22" fill="#3273dc" opacity="0.06"/>
+    <ellipse cx="52" cy="44" rx="20" ry="14.5" fill="#3273dc" opacity="0.10"/>
+    <ellipse cx="52" cy="44" rx="10" ry="7.3" fill="#3273dc" opacity="0.18"/>
+    <circle cx="52" cy="44" r="2.6" fill="#1d5fc2"/>
+    <text x="52" y="57" font-size="8.5" fill="#1d5fc2" text-anchor="middle" font-style="italic">&#956;</text>
+    <circle cx="76" cy="29" r="4" fill="#c9c9c9" stroke="#8a8a8a" stroke-width="1"/>
+    <text x="76" y="20" font-size="9" fill="#5a5a5a" text-anchor="middle" font-style="italic">z</text>
+    </svg></td>
+                    <td class="is-size-7">Isotropic Gaussian ProtoPNet (ours)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="is-size-7 has-text-justified" style="color:#7a7a7a; border-left: 3px solid #dbdbdb; padding-left: 0.6rem;">
+              <strong>Why not the raw log-likelihood?</strong> For the Gaussian variant, we bound distances by mapping back to the
+              equivalent Euclidean radius (Sec. 4.4) instead of working directly with the negative log-likelihood &mdash; the Euclidean
+              form keeps training smooth and fully differentiable.
+            </p>
           </div>
         </div>
 
         <div class="axis-panel is-hidden" data-index="1">
           <h4 class="title is-5 has-text-centered">2. Distance-to-Similarity Function</h4>
           <div class="content">
-            <p>How a raw distance $d$ is converted into a bounded similarity score $\text{sim} = \sigma(d)$:</p>
-            <ul>
-              <li><strong>ProtoPNet's log-ratio:</strong> $\sigma(d) = \log\!\big(\frac{d^2+1}{d^2+\epsilon}\big)$.</li>
-              <li><strong>Cosine architectures</strong> skip this step entirely &mdash; the dot product already <em>is</em> the similarity, $\sigma = \text{id}$.</li>
-              <li><strong>Gaussian density:</strong> $S(d) = -\tfrac12 d^2 - \log Z$ (up to normalization).</li>
-            </ul>
+            <p class="is-size-7 has-text-centered mb-3">How a raw distance $d$ is converted into a bounded similarity score $\text{sim} = \sigma(d)$.</p>
+            <div class="table-container">
+              <table class="table is-bordered is-narrow is-fullwidth axis-table">
+                <thead><tr><th>Variant</th><th>Formula</th><th class="has-text-centered">Shape</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>ProtoPNet</strong> log-ratio</td>
+                    <td>$\sigma(d) = \log\!\big(\frac{d^2+1}{d^2+\epsilon}\big)$</td>
+                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="8" x2="14" y2="56" stroke="#c3c3c3" stroke-width="1"/><line x1="14" y1="56" x2="96" y2="56" stroke="#c3c3c3" stroke-width="1"/><text x="5" y="13" font-size="8" fill="#9a9a9a">sim</text><text x="90" y="66" font-size="8" fill="#9a9a9a">d</text><polyline points="14.0,16.0 18.2,18.6 22.4,24.5 26.6,30.8 30.8,36.3 35.0,40.6 39.2,43.9 43.4,46.5 47.6,48.5 51.8,50.0 56.0,51.3 60.2,52.2 64.4,53.0 68.6,53.7 72.8,54.2 77.0,54.6 81.2,55.0 85.4,55.3 89.6,55.6 93.8,55.8 98.0,56.0" fill="none" stroke="#2b8a6d" stroke-width="2"/></svg></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Cosine</strong> (identity)</td>
+                    <td>$\sigma = \text{id}$, no transform</td>
+                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="8" x2="14" y2="56" stroke="#c3c3c3" stroke-width="1"/><line x1="14" y1="56" x2="96" y2="56" stroke="#c3c3c3" stroke-width="1"/><text x="5" y="13" font-size="8" fill="#9a9a9a">sim</text><text x="90" y="66" font-size="8" fill="#9a9a9a">d</text><line x1="14" y1="56" x2="98" y2="16" stroke="#2b8a6d" stroke-width="2"/><text x="92" y="20" font-size="8" fill="#7a7a7a" text-anchor="end">no transform</text></svg></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Gaussian</strong> density</td>
+                    <td>$S(d) = -\tfrac12 d^2 - \log Z$</td>
+                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="8" x2="14" y2="56" stroke="#c3c3c3" stroke-width="1"/><line x1="14" y1="56" x2="96" y2="56" stroke="#c3c3c3" stroke-width="1"/><text x="5" y="13" font-size="8" fill="#9a9a9a">sim</text><text x="90" y="66" font-size="8" fill="#9a9a9a">d</text><polyline points="14.0,16.0 18.2,16.1 22.4,16.4 26.6,16.9 30.8,17.6 35.0,18.5 39.2,19.6 43.4,20.9 47.6,22.4 51.8,24.1 56.0,26.0 60.2,28.1 64.4,30.4 68.6,32.9 72.8,35.6 77.0,38.5 81.2,41.6 85.4,44.9 89.6,48.4 93.8,52.1 98.0,56.0" fill="none" stroke="#2b8a6d" stroke-width="2"/></svg></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
         <div class="axis-panel is-hidden" data-index="2">
           <h4 class="title is-5 has-text-centered">3. Pooling Function</h4>
           <div class="content">
-            <p>How per-patch similarities are aggregated into one activation $a_j$ per prototype:</p>
-            <ul>
-              <li><strong>Max pooling:</strong> $a_j = \max_{l\in L} \text{sim}(z_l,p_j)$ &mdash; used by nearly every architecture.</li>
-              <li><strong>Focal pooling</strong> (ProtoPool): $a_j = \max_{l\in L}\text{sim}(z_l,p_j) - \mathbb{E}_{l\in L}[\text{sim}(z_l,p_j)]$, subtracting the average activation to suppress background noise.</li>
-            </ul>
+            <p class="is-size-7 has-text-centered mb-3">How per-patch similarities are aggregated into one activation $a_j$ per prototype.</p>
+            <div class="table-container">
+              <table class="table is-bordered is-narrow is-fullwidth axis-table">
+                <thead><tr><th>Variant</th><th>Formula</th><th class="has-text-centered">Visual</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Max</strong> pooling</td>
+                    <td>$a_j = \max_{l\in L} \text{sim}(z_l,p_j)$</td>
+                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg"><rect x="14" y="50" width="11" height="16" fill="#e6e6e6" stroke="#a8a8a8" stroke-width="1.1" rx="1.5"/><rect x="30" y="36" width="11" height="30" fill="#e6e6e6" stroke="#a8a8a8" stroke-width="1.1" rx="1.5"/><rect x="46" y="22" width="11" height="44" fill="#ffdca8" stroke="#c9891f" stroke-width="1.1" rx="1.5"/><rect x="62" y="44" width="11" height="22" fill="#e6e6e6" stroke="#a8a8a8" stroke-width="1.1" rx="1.5"/><rect x="78" y="32" width="11" height="34" fill="#e6e6e6" stroke="#a8a8a8" stroke-width="1.1" rx="1.5"/><text x="51.5" y="16" font-size="8.5" fill="#c9891f" text-anchor="middle" font-weight="700">max</text><line x1="10" y1="66" x2="96" y2="66" stroke="#c3c3c3" stroke-width="1"/></svg></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Focal</strong> pooling (ProtoPool)</td>
+                    <td>$a_j = \max_{l\in L}\text{sim} - \mathbb{E}_{l\in L}[\text{sim}]$</td>
+                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg"><rect x="14" y="50" width="11" height="16" fill="#e6e6e6" stroke="#a8a8a8" stroke-width="1.1" rx="1.5"/><rect x="30" y="36" width="11" height="30" fill="#e6e6e6" stroke="#a8a8a8" stroke-width="1.1" rx="1.5"/><rect x="46" y="22" width="11" height="44" fill="#ffdca8" stroke="#c9891f" stroke-width="1.1" rx="1.5"/><rect x="62" y="44" width="11" height="22" fill="#e6e6e6" stroke="#a8a8a8" stroke-width="1.1" rx="1.5"/><rect x="78" y="32" width="11" height="34" fill="#e6e6e6" stroke="#a8a8a8" stroke-width="1.1" rx="1.5"/><line x1="10" y1="36.8" x2="96" y2="36.8" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,2"/><text x="98" y="39.8" font-size="7.5" fill="#c0392b" text-anchor="start">avg</text><line x1="60.0" y1="22.0" x2="60.0" y2="36.8" stroke="#4a4a4a" stroke-width="1.2"/><text x="63.0" y="32.4" font-size="8" fill="#4a4a4a">&#8722;</text><line x1="10" y1="66" x2="96" y2="66" stroke="#c3c3c3" stroke-width="1"/></svg></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="is-size-7 has-text-centered" style="color:#7a7a7a;">Focal pooling subtracts the average activation from the max, suppressing prototypes that fire uniformly across background patches.</p>
           </div>
         </div>
 
