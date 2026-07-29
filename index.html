@@ -241,6 +241,12 @@
       .arch-bracket.mid { grid-column: 3 / 7; }
       .arch-bracket.dec { grid-column: 7 / 10; }
       .arch-bracket-overall { grid-row: 3; grid-column: 1 / 10; border-top: 1px solid #7a7a7a; padding-top: 4px; margin-top: 10px; text-align: center; font-size: 0.75rem; font-weight: 600; color: #4a4a4a; }
+      .arch-divider { border: none; border-top: 1px solid #e2e2e2; margin: 1.5rem 0.5rem 1.25rem; }
+      .axis-panel-wrap { max-width: 620px; margin: 0 auto; padding: 0 0.5rem 0.25rem; }
+      .axis-panel p, .axis-panel li { font-size: 0.92rem; }
+      .cycle-nav { display: flex; align-items: center; justify-content: center; gap: 0.65rem; margin-top: 1.4rem; }
+      .cycle-chevron { background: none; border: none; cursor: pointer; font-size: 1.3rem; line-height: 1; color: #9a9a9a; padding: 0.15rem 0.4rem; border-radius: 6px; transition: all 0.15s; }
+      .cycle-chevron:hover { color: #363636; background: #e8e8e8; }
     </style>
 
     <div class="arch-card">
@@ -341,18 +347,12 @@
 
       </div>
     </div>
-    </div>
 
-    <div class="columns is-vcentered is-centered">
-      <div class="column is-narrow">
-        <button class="button is-rounded is-dark mechanism-nav" id="axisPrev" aria-label="Previous axis">
-          <span class="icon"><i class="fas fa-chevron-left"></i></span>
-        </button>
-      </div>
+      <hr class="arch-divider">
 
-      <div class="column is-8">
+      <div class="axis-panel-wrap">
 
-        <div class="box axis-panel" data-index="0">
+        <div class="axis-panel" data-index="0">
           <h4 class="title is-5 has-text-centered">1. Distance Function</h4>
           <div class="content">
             <p>How "closeness" between a latent patch and a prototype is first measured, before any conversion to a bounded score:</p>
@@ -364,7 +364,7 @@
           </div>
         </div>
 
-        <div class="box axis-panel is-hidden" data-index="1">
+        <div class="axis-panel is-hidden" data-index="1">
           <h4 class="title is-5 has-text-centered">2. Distance-to-Similarity Function</h4>
           <div class="content">
             <p>How a raw distance $d$ is converted into a bounded similarity score $\text{sim} = \sigma(d)$:</p>
@@ -376,7 +376,7 @@
           </div>
         </div>
 
-        <div class="box axis-panel is-hidden" data-index="2">
+        <div class="axis-panel is-hidden" data-index="2">
           <h4 class="title is-5 has-text-centered">3. Pooling Function</h4>
           <div class="content">
             <p>How per-patch similarities are aggregated into one activation $a_j$ per prototype:</p>
@@ -387,16 +387,12 @@
           </div>
         </div>
 
-        <div class="has-text-centered mt-3" id="axisDots">
+        <div class="cycle-nav" id="axisDots">
+          <button class="cycle-chevron" id="axisPrev" aria-label="Previous axis">&lsaquo;</button>
           <span class="mechanism-dot is-active" data-index="0"></span><span class="mechanism-dot" data-index="1"></span><span class="mechanism-dot" data-index="2"></span>
+          <button class="cycle-chevron" id="axisNext" aria-label="Next axis">&rsaquo;</button>
         </div>
 
-      </div>
-
-      <div class="column is-narrow">
-        <button class="button is-rounded is-dark mechanism-nav" id="axisNext" aria-label="Next axis">
-          <span class="icon"><i class="fas fa-chevron-right"></i></span>
-        </button>
       </div>
     </div>
 
@@ -470,16 +466,10 @@
       .mechanism-nav { width: 2.5rem; height: 2.5rem; }
     </style>
 
-    <div class="columns is-vcentered is-centered">
-      <div class="column is-narrow">
-        <button class="button is-rounded is-dark mechanism-nav" id="mechPrev" aria-label="Previous mechanism">
-          <span class="icon"><i class="fas fa-chevron-left"></i></span>
-        </button>
-      </div>
+    <div class="axis-panel-wrap" style="max-width: 680px;">
+      <div class="box">
 
-      <div class="column is-8">
-
-        <div class="box mechanism-panel" data-index="0">
+        <div class="mechanism-panel" data-index="0">
           <h4 class="title is-5 has-text-centered">Spherical Cap Intersection (Cosine Similarity)</h4>
           <div class="content">
             <p>
@@ -506,7 +496,7 @@
           </div>
         </div>
 
-        <div class="box mechanism-panel is-hidden" data-index="1">
+        <div class="mechanism-panel is-hidden" data-index="1">
           <h4 class="title is-5 has-text-centered">Simplex Mass Conservation (PIP-Net)</h4>
           <div class="content">
             <p>
@@ -533,7 +523,7 @@
           </div>
         </div>
 
-        <div class="box mechanism-panel is-hidden" data-index="2">
+        <div class="mechanism-panel is-hidden" data-index="2">
           <h4 class="title is-5 has-text-centered">Gaussian Hypersphere Intersection</h4>
           <div class="content">
             <p>
@@ -559,16 +549,12 @@
           </div>
         </div>
 
-        <div class="has-text-centered mt-3" id="mechDots">
+        <div class="cycle-nav" id="mechDots">
+          <button class="cycle-chevron" id="mechPrev" aria-label="Previous mechanism">&lsaquo;</button>
           <span class="mechanism-dot is-active" data-index="0"></span><span class="mechanism-dot" data-index="1"></span><span class="mechanism-dot" data-index="2"></span>
+          <button class="cycle-chevron" id="mechNext" aria-label="Next mechanism">&rsaquo;</button>
         </div>
 
-      </div>
-
-      <div class="column is-narrow">
-        <button class="button is-rounded is-dark mechanism-nav" id="mechNext" aria-label="Next mechanism">
-          <span class="icon"><i class="fas fa-chevron-right"></i></span>
-        </button>
       </div>
     </div>
 
