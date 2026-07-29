@@ -215,29 +215,128 @@
     </div>
 
     <style>
-      .pipeline-diagram { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.4rem; margin: 1.5rem 0; }
-      .pipeline-stage { border: 1px solid #dbdbdb; border-radius: 8px; padding: 0.6rem 0.9rem; background: white; text-align: center; font-size: 0.85rem; line-height: 1.3; min-width: 92px; transition: all 0.25s; }
-      .pipeline-arrow { color: #b5b5b5; font-size: 1.1rem; }
-      .pipeline-variant { border-style: dashed; }
-      .pipeline-variant.is-highlighted { border-style: solid; border-color: #363636; background: #f0f0f0; box-shadow: 0 2px 6px rgba(0,0,0,0.12); font-weight: 600; }
+      .arch-scroll { overflow-x: auto; padding: 0.5rem 0 1rem; }
+      .arch-diagram {
+        display: grid;
+        grid-template-columns: repeat(4, auto minmax(50px, 70px)) auto;
+        grid-template-rows: auto auto auto;
+        align-items: end;
+        justify-content: center;
+        column-gap: 0.35rem;
+        width: max-content;
+        margin: 0 auto;
+      }
+      .arch-node { display: flex; flex-direction: column; align-items: center; text-align: center; width: 108px; }
+      .arch-node .arch-icon { height: 56px; display: flex; align-items: center; justify-content: center; }
+      .arch-node .arch-label { font-size: 0.78rem; font-weight: 600; margin-top: 0.3rem; white-space: nowrap; }
+      .arch-node .arch-math { font-size: 0.72rem; color: #7a7a7a; }
+      .arch-arrow { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 56px; padding-bottom: 4px; }
+      .arch-arrow .arrow-glyph { color: #b5b5b5; font-size: 1.2rem; line-height: 1; }
+      .arch-arrow .arrow-label { font-size: 0.68rem; color: #7a7a7a; white-space: nowrap; margin-bottom: 2px; transition: all 0.2s; border-radius: 4px; padding: 1px 4px; }
+      .arch-arrow .arrow-label.is-active { color: #fff; background: #363636; font-weight: 600; }
+      .arch-bracket { grid-row: 2; border-top: 1px solid #b5b5b5; padding-top: 4px; margin-top: 12px; text-align: center; font-size: 0.72rem; color: #7a7a7a; }
+      .arch-bracket.top { grid-column: 1 / 4; }
+      .arch-bracket.mid { grid-column: 3 / 7; }
+      .arch-bracket.dec { grid-column: 7 / 10; }
+      .arch-bracket-overall { grid-row: 3; grid-column: 1 / 10; border-top: 1px solid #7a7a7a; padding-top: 4px; margin-top: 10px; text-align: center; font-size: 0.75rem; font-weight: 600; color: #4a4a4a; }
     </style>
 
-    <div class="pipeline-diagram" id="pipelineDiagram">
-      <div class="pipeline-stage">Input<br><span class="is-size-7">image $X$</span></div>
-      <div class="pipeline-arrow">&rarr;</div>
-      <div class="pipeline-stage">Encoder<br><span class="is-size-7">$f$</span></div>
-      <div class="pipeline-arrow">&rarr;</div>
-      <div class="pipeline-stage">Latent patches<br><span class="is-size-7">$z_l$</span></div>
-      <div class="pipeline-arrow">&rarr;</div>
-      <div class="pipeline-stage pipeline-variant" data-axis="0">Distance<br><span class="is-size-7">$d(z_l,p_j)$</span></div>
-      <div class="pipeline-arrow">&rarr;</div>
-      <div class="pipeline-stage pipeline-variant" data-axis="1">Similarity<br><span class="is-size-7">$\sigma(d)$</span></div>
-      <div class="pipeline-arrow">&rarr;</div>
-      <div class="pipeline-stage pipeline-variant" data-axis="2">Pooling<br><span class="is-size-7">$a_j$</span></div>
-      <div class="pipeline-arrow">&rarr;</div>
-      <div class="pipeline-stage">Decision layer<br><span class="is-size-7">$h$</span></div>
-      <div class="pipeline-arrow">&rarr;</div>
-      <div class="pipeline-stage">Class logits</div>
+    <div class="arch-scroll">
+      <div class="arch-diagram" id="archDiagram">
+
+        <div class="arch-node">
+          <div class="arch-icon">
+            <svg width="52" height="46" viewBox="0 0 60 50">
+              <rect x="10" y="4" width="40" height="32" rx="3" fill="#f5f5f5" stroke="#b5b5b5"/>
+              <rect x="4" y="10" width="40" height="32" rx="3" fill="#ffffff" stroke="#7a7a7a"/>
+              <circle cx="14" cy="20" r="3" fill="#b5b5b5"/>
+              <path d="M6 36 L18 24 L26 32 L36 20 L42 36 Z" fill="#dcdcdc"/>
+            </svg>
+          </div>
+          <div class="arch-label">Image space</div>
+          <div class="arch-math">$\mathbb{R}^{H_0 \times W_0 \times C_0}$</div>
+        </div>
+
+        <div class="arch-arrow">
+          <div class="arrow-label">encoder $f$</div>
+          <div class="arrow-glyph">&rarr;</div>
+        </div>
+
+        <div class="arch-node">
+          <div class="arch-icon">
+            <svg width="60" height="52" viewBox="0 0 70 60">
+              <polygon points="14,14 46,6 62,14 30,22" fill="#e8e8e8" stroke="#8a8a8a"/>
+              <rect x="14" y="22" width="30" height="28" fill="#f5f5f5" stroke="#8a8a8a"/>
+              <polygon points="44,22 62,14 62,42 44,50" fill="#dcdcdc" stroke="#8a8a8a"/>
+              <line x1="14" y1="32" x2="44" y2="32" stroke="#c3c3c3" stroke-dasharray="2,2"/>
+              <line x1="14" y1="41" x2="44" y2="41" stroke="#c3c3c3" stroke-dasharray="2,2"/>
+              <line x1="24" y1="22" x2="24" y2="50" stroke="#c3c3c3" stroke-dasharray="2,2"/>
+              <line x1="34" y1="22" x2="34" y2="50" stroke="#c3c3c3" stroke-dasharray="2,2"/>
+              <rect x="24" y="32" width="10" height="9" fill="#3273dc" opacity="0.85"/>
+            </svg>
+          </div>
+          <div class="arch-label">Latent space</div>
+          <div class="arch-math">$\mathbb{R}^{H_1 \times W_1 \times D}$</div>
+        </div>
+
+        <div class="arch-arrow">
+          <div class="arrow-label" id="archDistanceLabel">distance $d$</div>
+          <div class="arrow-glyph">&rarr;</div>
+        </div>
+
+        <div class="arch-node">
+          <div class="arch-icon">
+            <svg width="40" height="52" viewBox="0 0 50 60">
+              <rect x="8" y="4" width="10" height="20" rx="2" fill="#bcd4f2" stroke="#3273dc"/>
+              <rect x="22" y="10" width="10" height="20" rx="2" fill="#bcd4f2" stroke="#3273dc"/>
+              <rect x="36" y="16" width="10" height="20" rx="2" fill="#bcd4f2" stroke="#3273dc"/>
+            </svg>
+          </div>
+          <div class="arch-label">Prototype space</div>
+          <div class="arch-math">$\mathbb{R}^{D \times m}$</div>
+        </div>
+
+        <div class="arch-arrow">
+          <div class="arrow-label" id="archSimilarityLabel">similarity $\sigma$</div>
+          <div class="arrow-label" id="archPoolingLabel">pooling</div>
+          <div class="arrow-glyph">&rarr;</div>
+        </div>
+
+        <div class="arch-node">
+          <div class="arch-icon">
+            <svg width="30" height="52" viewBox="0 0 30 60">
+              <circle cx="15" cy="8" r="6" fill="#ffe08a" stroke="#b5891c"/>
+              <circle cx="15" cy="26" r="6" fill="#ffe08a" stroke="#b5891c"/>
+              <circle cx="15" cy="44" r="6" fill="#ffe08a" stroke="#b5891c"/>
+            </svg>
+          </div>
+          <div class="arch-label">Activation space</div>
+          <div class="arch-math">$\mathbb{R}^{m}$</div>
+        </div>
+
+        <div class="arch-arrow">
+          <div class="arrow-label">decision $h$</div>
+          <div class="arrow-glyph">&rarr;</div>
+        </div>
+
+        <div class="arch-node">
+          <div class="arch-icon">
+            <svg width="30" height="52" viewBox="0 0 30 60">
+              <circle cx="15" cy="10" r="7" fill="#ffffff" stroke="#7a7a7a"/>
+              <circle cx="15" cy="30" r="7" fill="#ffffff" stroke="#7a7a7a"/>
+              <circle cx="15" cy="50" r="7" fill="#ffffff" stroke="#7a7a7a"/>
+            </svg>
+          </div>
+          <div class="arch-label">Class logits</div>
+          <div class="arch-math">$\mathbb{R}^{C}$</div>
+        </div>
+
+        <div class="arch-bracket top">encoding layer $f$</div>
+        <div class="arch-bracket mid">prototype activation layer $a$</div>
+        <div class="arch-bracket dec">decision layer $h$</div>
+        <div class="arch-bracket-overall">predictor function $\kappa$</div>
+
+      </div>
     </div>
 
     <div class="columns is-vcentered is-centered">
@@ -301,12 +400,19 @@
       (function () {
         var panels = document.querySelectorAll('.axis-panel');
         var dots = document.querySelectorAll('#axisDots .mechanism-dot');
-        var stages = document.querySelectorAll('.pipeline-variant');
+        var archLabels = [
+          document.getElementById('archDistanceLabel'),
+          document.getElementById('archSimilarityLabel'),
+          document.getElementById('archPoolingLabel')
+        ];
         var current = 0;
         function show(index) {
           panels.forEach(function (p, i) { p.classList.toggle('is-hidden', i !== index); });
           dots.forEach(function (d, i) { d.classList.toggle('is-active', i === index); });
-          stages.forEach(function (s) { s.classList.toggle('is-highlighted', s.getAttribute('data-axis') === String(index)); });
+          // axis 0 -> distance arrow, axis 1 -> similarity arrow, axis 2 -> pooling arrow
+          archLabels[0].classList.toggle('is-active', index === 0);
+          archLabels[1].classList.toggle('is-active', index === 1);
+          archLabels[2].classList.toggle('is-active', index === 2);
           current = index;
           if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); }
         }
