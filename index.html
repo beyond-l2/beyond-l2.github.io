@@ -453,52 +453,21 @@
 
             <div class="table-container">
               <table class="table is-bordered is-narrow is-fullwidth axis-table">
-                <thead><tr><th>Variant</th><th>Formula</th><th class="has-text-centered">Visual</th><th>Used by</th></tr></thead>
+                <thead><tr><th>Variant</th><th>Formula</th><th>Used by</th></tr></thead>
                 <tbody>
                   <tr>
                     <td><strong>Euclidean</strong> ($L_2$)</td>
                     <td>$d(z_l,p_j) = \|z_l-p_j\|_2$</td>
-                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
-    <line x1="26" y1="52" x2="78" y2="20" stroke="#9a9a9a" stroke-width="1.4" stroke-dasharray="3,2"/>
-    <circle cx="26" cy="52" r="4.5" fill="#c9c9c9" stroke="#8a8a8a" stroke-width="1"/>
-    <circle cx="78" cy="20" r="4.5" fill="#3273dc" stroke="#1d5fc2" stroke-width="1"/>
-    <text x="26" y="68" font-size="9" fill="#5a5a5a" text-anchor="middle" font-style="italic">p</text>
-    <text x="78" y="12" font-size="9" fill="#1d5fc2" text-anchor="middle" font-style="italic">z</text>
-    <text x="58.0" y="34.0" font-size="10" fill="#4a4a4a" text-anchor="middle" font-style="italic">d</text>
-    </svg></td>
                     <td class="is-size-7">ProtoPNet, ProtoPool, ProtoGMM&dagger;, MGProto&dagger;, ProtoPFormer&dagger;</td>
                   </tr>
                   <tr>
                     <td><strong>Cosine</strong> / spherical</td>
                     <td>$d(z_l,p_j) = z_l \cdot p_j$</td>
-                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="44" r="28" fill="none" stroke="#dcdcdc" stroke-width="1.2"/>
-    <line x1="50" y1="44" x2="75.4" y2="32.2" stroke="#3273dc" stroke-width="1.6"/>
-    <line x1="50" y1="44" x2="47.6" y2="16.1" stroke="#8a8a8a" stroke-width="1.6"/>
-    <path d="M 62.7 38.1 A 14 14 0 0 0 48.8 30.1" fill="none" stroke="#c99a1f" stroke-width="1.2"/>
-    <circle cx="50" cy="44" r="2" fill="#4a4a4a"/>
-    <circle cx="75.4" cy="32.2" r="4" fill="#3273dc" stroke="#1d5fc2" stroke-width="1"/>
-    <circle cx="47.6" cy="16.1" r="4" fill="#c9c9c9" stroke="#8a8a8a" stroke-width="1"/>
-    <text x="84.4" y="30.2" font-size="9" fill="#1d5fc2" text-anchor="middle" font-style="italic">z</text>
-    <text x="38.6" y="10.1" font-size="9" fill="#5a5a5a" text-anchor="middle" font-style="italic">p</text>
-    <text x="52" y="26" font-size="8.5" fill="#a17a10" text-anchor="middle">&#952;</text>
-    </svg></td>
                     <td class="is-size-7">TesNet, Deformable ProtoPNet, PIP-Net, HyperPG&dagger;, NonParam</td>
                   </tr>
                   <tr>
                     <td><strong>Gaussian</strong></td>
                     <td>$d(z_l,p_j) = \dfrac{\|z_l-\mu_j\|_2}{\sigma_j}$<br><span class="is-size-7" style="color:#9a9a9a;">prototype $\sim\mathcal{N}(\mu_j,\sigma_j^2 I)$</span></td>
-                    <td><svg viewBox="0 0 110 78" width="100%" style="max-width:110px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
-    <line x1="73" y1="22" x2="52" y2="41" stroke="#9a9a9a" stroke-width="1.4" stroke-dasharray="3,2"/>
-    <circle cx="52" cy="41" r="27" fill="#9a9a9a" opacity="0.10"/>
-    <circle cx="52" cy="41" r="18" fill="#9a9a9a" opacity="0.16"/>
-    <circle cx="52" cy="41" r="9" fill="#9a9a9a" opacity="0.26"/>
-    <circle cx="52" cy="41" r="2.6" fill="#5a5a5a"/>
-    <text x="52" y="54" font-size="8.5" fill="#5a5a5a" text-anchor="middle" font-style="italic">&#956;</text>
-    <circle cx="73" cy="22" r="4" fill="#3273dc" stroke="#1d5fc2" stroke-width="1"/>
-    <text x="73" y="13" font-size="9" fill="#1d5fc2" text-anchor="middle" font-style="italic">z</text>
-    <text x="57" y="27" font-size="9" fill="#4a4a4a" text-anchor="middle" font-style="italic">d</text>
-    </svg></td>
                     <td class="is-size-7">ProtoGMM, MGProto, HyperPG, ProtoPFormer, Isotropic Gaussian ProtoPNet (ours)</td>
                   </tr>
                 </tbody>
@@ -724,7 +693,7 @@
                    style="max-height: 340px; width: auto; max-width: 100%; border-radius: 5px; background:white; border: 1px solid #ddd;">
             </figure>
             <p class="is-size-7 mt-2">
-              <strong>Figure:</strong> Cutting the probability simplex at the observed similarity $s_j$ (blue plane) restricts the target
+              <strong>Figure 2:</strong> Cutting the probability simplex at the observed similarity $s_j$ (blue plane) restricts the target
               prototype $p_k$ to the segment between $z_{best}$ and $z_{worst}$, bounding its similarity between $0$ and $S_{tgt}^{max}$.
             </p>
           </div>
@@ -734,9 +703,9 @@
           <h4 class="title is-5 has-text-centered">Gaussian Hypersphere Intersection</h4>
           <div class="content">
             <p>
-              Gaussian prototype networks (e.g., an Isotropic Gaussian ProtoPNet) replace distance with a negative log-likelihood. Since any
-              valid similarity function $S$ is a strictly monotonic transform of an underlying Euclidean distance, we invert it back to a true
-              radius, apply the existing Hypersphere Intersection Approximation, then map the tightened bound back into activation space:
+              Since the Gaussian similarity $S$ (above) is a strictly monotonic transform of an underlying Euclidean distance, we invert it
+              back to a true radius, apply the existing Hypersphere Intersection Approximation, then map the tightened bound back into
+              activation space:
             </p>
             $$
             d_{\text{Euclid}}(z_l,\mu_j) = \sigma_j\, S^{-1}\big(\text{sim}(z_l,p_j)\big)
@@ -750,7 +719,7 @@
                    style="max-height: 340px; width: auto; max-width: 100%; border-radius: 5px; background:white; border: 1px solid #ddd;">
             </figure>
             <p class="is-size-7 mt-2">
-              <strong>Figure 2:</strong> Each prototype $\mu_j$ is defined by its anchor and variance $\sigma_j$ (shaded layer). The red dotted
+              <strong>Figure 3:</strong> Each prototype $\mu_j$ is defined by its anchor and variance $\sigma_j$ (shaded layer). The red dotted
               circle is the hypersphere approximating the intersection of the two Gaussian "uncertainty regions" in Euclidean metric space.
             </p>
           </div>
@@ -760,10 +729,9 @@
           <h4 class="title is-5 has-text-centered">Aggregate Statistics over Spatial Bounds (Focal Pooling)</h4>
           <div class="content">
             <p>
-              ProtoPool's <strong>focal pooling</strong> replaces max-pooling with $a_j = \max_{l\in L}\text{sim}(z_l,p_j) - \mathbb{E}_{l\in L}[\text{sim}(z_l,p_j)]$
-              &mdash; a different pooling function, orthogonal to which of the three geometries above is used. Spatial ALEs already give a formal
-              bound $[\underline{\text{sim}}_{\mathcal{E}}(z_l,p_j), \overline{\text{sim}}_{\mathcal{E}}(z_l,p_j)]$ for <em>every</em> patch $l$, so
-              the max and the mean over patches can each be bounded directly from those existing per-patch bounds:
+              ProtoPool's <strong>focal pooling</strong> &mdash; the max-minus-mean pooling introduced earlier &mdash; is orthogonal to which of
+              the three geometries above is used. Since spatial ALEs already bound every patch's similarity individually, the max and the mean
+              over patches can each be bounded directly from those per-patch bounds:
             </p>
             $$
             \max_{l\in L}\text{sim}(z_l,p_j) \in \Big[\max_{l\in L}\underline{\text{sim}}_{\mathcal{E}}(z_l,p_j),\ \max_{l\in L}\overline{\text{sim}}_{\mathcal{E}}(z_l,p_j)\Big]
@@ -771,7 +739,7 @@
             $$
             \mathbb{E}_{l\in L}[\text{sim}(z_l,p_j)] \in \Big[\mathbb{E}_{l\in L}[\underline{\text{sim}}_{\mathcal{E}}(z_l,p_j)],\ \mathbb{E}_{l\in L}[\overline{\text{sim}}_{\mathcal{E}}(z_l,p_j)]\Big]
             $$
-            <p>Since the focal activation is a difference of these two quantities, its extremes occur by cross-subtracting the bounds:</p>
+            <p>The focal activation's extremes follow by cross-subtracting these two bounds:</p>
             $$
             \underline{a}_{\mathcal{E},j} = \max_{l\in L}\underline{\text{sim}}_{\mathcal{E}}(z_l,p_j) - \mathbb{E}_{l\in L}\big[\overline{\text{sim}}_{\mathcal{E}}(z_l,p_j)\big], \qquad
             \overline{a}_{\mathcal{E},j} = \max_{l\in L}\overline{\text{sim}}_{\mathcal{E}}(z_l,p_j) - \mathbb{E}_{l\in L}\big[\underline{\text{sim}}_{\mathcal{E}}(z_l,p_j)\big]
@@ -795,9 +763,8 @@
               </svg>
             </figure>
             <p class="is-size-7 mt-2">
-              <strong>Figure:</strong> each patch $l$ has its own similarity bound (gray bars) already computed by whichever geometry above
-              applies; the highest-ceiling patch (amber) bounds the max term, and a bound on their mean (teal band) bounds the expectation
-              term &mdash; focal pooling's bound falls out of these two by simple cross-subtraction, with no change to the geometric solver itself.
+              <strong>Figure 4:</strong> per-patch similarity bounds (gray bars, one per patch $l$); the highest-ceiling patch (amber) sets the
+              max term, the teal band marks the bound on their mean.
             </p>
           </div>
         </div>
@@ -844,13 +811,9 @@
         <h2 class="title is-3">Generalizing Beyond Euclidean Geometry</h2>
         <div class="content has-text-justified">
           <p>
-            Modern prototype-part networks have quietly diverged from ProtoPNet's original Euclidean, max-pooled formulation: some
-            switch similarity function (cosine instead of $L_2$), some model prototypes as Gaussian distributions rather than point-vectors,
-            and some replace max-pooling with focal pooling or a softmax-based probability simplex. Each variant breaks a different
-            assumption the original ALE bounds relied on. We systematically walk through each axis of variation below and derive a sound
-            bounding mechanism for it &mdash; either by mapping it back to an existing paradigm (e.g., Gaussian &rarr; Euclidean) or by deriving a
-            new one from scratch (e.g., cosine &rarr; spherical caps, softmax &rarr; simplex mass conservation, focal pooling &rarr; aggregate
-            statistics over spatial bounds).
+            The table below places ten published architectures along the three axes introduced above, showing how far each has drifted from
+            ProtoPNet's original Euclidean, max-pooled design &mdash; and, per the bounding mechanisms just covered, every combination it
+            contains admits a sound ALE bound.
           </p>
         </div>
 
@@ -990,8 +953,6 @@
         </tbody>
       </table>
     </div>
-    <p class="is-size-7 has-text-centered mt-3">Both cosine-manifold and Gaussian spatial-constraint ALEs exceeded the computation
-      time budget on CUB-200, mirroring the scalability limitation already observed as class count grows.</p>
     </div>
 
     <script>
