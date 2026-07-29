@@ -17,8 +17,8 @@
   <meta property="og:description" content="We generalize Abductive Latent Explanations (ALEs) beyond Euclidean latent spaces to spherical, Gaussian, and probability-simplex prototype architectures.">
   <meta property="og:url" content="https://beyond-l2.github.io/">
   <meta property="og:image" content="static/images/hia_gaussian.png">
-  <meta property="og:image:width" content="1920">
-  <meta property="og:image:height" content="1129">
+  <meta property="og:image:width" content="615">
+  <meta property="og:image:height" content="621">
   <meta property="og:image:alt" content="Gaussian Hypersphere Intersection Approximation">
 
   <meta name="twitter:card" content="summary_large_image">
@@ -38,7 +38,7 @@
 
   <title>Beyond L2: Generalizing Abductive Latent Explanations to Diverse Prototype-Based Architectures</title>
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍺</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
   <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
@@ -207,18 +207,39 @@
         <div class="content has-text-justified">
           <p>
             The original ALE framework bounds a latent patch's location using intersections of <strong>Euclidean</strong> hyperspheres.
-            We show that the same principle &mdash; approximate the intersection of "uncertainty regions" around known prototypes by a single,
-            tighter region &mdash; carries over to two very different geometries.
+            We show that a similar principle &mdash; shrink the set of locations consistent with known prototypes down to a single, tighter
+            region &mdash; carries over to three very different geometries. Use the arrows (or dots) below to cycle through them.
           </p>
         </div>
       </div>
     </div>
 
-    <div class="columns is-centered">
+    <style>
+      .mechanism-dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #dbdbdb;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .mechanism-dot.is-active { background: #363636; }
+      .mechanism-nav { width: 2.5rem; height: 2.5rem; }
+    </style>
 
-      <div class="column is-6">
-        <div class="box" style="height: 100%;">
-          <h4 class="title is-5 has-text-centered">1. Spherical Cap Intersection (Cosine Similarity)</h4>
+    <div class="columns is-vcentered is-centered">
+      <div class="column is-narrow">
+        <button class="button is-rounded is-dark mechanism-nav" id="mechPrev" aria-label="Previous mechanism">
+          <span class="icon"><i class="fas fa-chevron-left"></i></span>
+        </button>
+      </div>
+
+      <div class="column is-8">
+
+        <div class="box mechanism-panel" data-index="0">
+          <h4 class="title is-5 has-text-centered">Spherical Cap Intersection (Cosine Similarity)</h4>
           <div class="content">
             <p>
               Architectures such as TesNet use cosine similarity, i.e., a dot product on the unit hypersphere. Cosine similarity is not a
@@ -237,17 +258,42 @@
                    style="max-height: 340px; width: auto; max-width: 100%; border-radius: 5px; background:white; border: 1px solid #ddd;">
             </figure>
             <p class="is-size-7 mt-2">
-              <strong>Figure 1:</strong> Two spherical caps (blue, orange), each centered on a known prototype with radius equal to its
+              <strong>Figure 1:</strong> Two spherical caps (blue, green), each centered on a known prototype with radius equal to its
               distance to the latent patch $z_l$, are bounded by a single tighter cap (dashed red), giving tighter bounds on the angular
               distance to any other prototype $p_k$.
             </p>
           </div>
         </div>
-      </div>
 
-      <div class="column is-6">
-        <div class="box" style="height: 100%;">
-          <h4 class="title is-5 has-text-centered">2. Gaussian Hypersphere Intersection</h4>
+        <div class="box mechanism-panel is-hidden" data-index="1">
+          <h4 class="title is-5 has-text-centered">Simplex Mass Conservation (PIP-Net)</h4>
+          <div class="content">
+            <p>
+              PIP-Net maps patch/prototype similarities through a <strong>softmax</strong>, so they live on a probability simplex
+              ($\sum_j \text{sim}(z_l,p_j) = 1$) rather than a metric space &mdash; there is nothing to take a distance between. Adding a known
+              $\langle z_l,p_j\rangle$ pair to the explanation instead "consumes" a slice of that probability mass, which directly caps every
+              other prototype's similarity for that patch:
+            </p>
+            $$
+            \overline{\text{sim}}_{\mathcal{E}}(z_l,p_k) = 1 - \sum_{\langle z_l,p_j\rangle \in \mathcal{E}} \text{sim}(z_l,p_j)
+            $$
+            <p>Across the whole image, this residual mass gives a hard global ceiling on any unseen prototype's activation:</p>
+            $$
+            \overline{a}_k \ \le\ \max_{l}\left(1 - \sum_{\langle z_l,p_j\rangle \in \mathcal{E}} \text{sim}(z_l,p_j)\right)
+            $$
+            <figure class="image is-inline-block has-text-centered" style="width:100%; margin-top: 1rem;">
+              <img src="static/images/hia_simplex.png" alt="Simplex Mass Conservation"
+                   style="max-height: 340px; width: auto; max-width: 100%; border-radius: 5px; background:white; border: 1px solid #ddd;">
+            </figure>
+            <p class="is-size-7 mt-2">
+              <strong>Figure:</strong> Cutting the probability simplex at the observed similarity $s_j$ (blue plane) restricts the target
+              prototype $p_k$ to the segment between $z_{best}$ and $z_{worst}$, bounding its similarity between $0$ and $S_{tgt}^{max}$.
+            </p>
+          </div>
+        </div>
+
+        <div class="box mechanism-panel is-hidden" data-index="2">
+          <h4 class="title is-5 has-text-centered">Gaussian Hypersphere Intersection</h4>
           <div class="content">
             <p>
               Gaussian prototype networks (e.g., an Isotropic Gaussian ProtoPNet) replace distance with a negative log-likelihood. Since any
@@ -271,8 +317,42 @@
             </p>
           </div>
         </div>
+
+        <div class="has-text-centered mt-3" id="mechDots">
+          <span class="mechanism-dot is-active" data-index="0"></span><span class="mechanism-dot" data-index="1"></span><span class="mechanism-dot" data-index="2"></span>
+        </div>
+
+      </div>
+
+      <div class="column is-narrow">
+        <button class="button is-rounded is-dark mechanism-nav" id="mechNext" aria-label="Next mechanism">
+          <span class="icon"><i class="fas fa-chevron-right"></i></span>
+        </button>
       </div>
     </div>
+
+    <script>
+      (function () {
+        var panels = document.querySelectorAll('.mechanism-panel');
+        var dots = document.querySelectorAll('.mechanism-dot');
+        var current = 0;
+        function show(index) {
+          panels.forEach(function (p, i) { p.classList.toggle('is-hidden', i !== index); });
+          dots.forEach(function (d, i) { d.classList.toggle('is-active', i === index); });
+          current = index;
+          if (window.MathJax && window.MathJax.typesetPromise) { window.MathJax.typesetPromise(); }
+        }
+        document.getElementById('mechPrev').addEventListener('click', function () {
+          show((current - 1 + panels.length) % panels.length);
+        });
+        document.getElementById('mechNext').addEventListener('click', function () {
+          show((current + 1) % panels.length);
+        });
+        dots.forEach(function (dot, i) {
+          dot.addEventListener('click', function () { show(i); });
+        });
+      })();
+    </script>
 
   </div>
   </section>
