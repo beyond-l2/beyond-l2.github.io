@@ -331,7 +331,7 @@
       <p>
         We trained a ProtoPNet, PIP-Net, TesNet, and Isotropic Gaussian ProtoPNet (plus ProtoPool on CUB200) using the
         <strong>CaBRNet</strong> library, and computed subset-minimal ALEs for every applicable paradigm on three fine-grained datasets:
-        Oxford Flowers 102, Oxford IIIT Pets, and CUB200. For each architecture, <strong>bold</strong> marks the best (smallest) result
+        Oxford Flowers 102, Oxford IIIT Pets, and CUB200 &mdash; select a dataset below to see its table. For each architecture, <strong>bold</strong> marks the best (smallest) result
         among its own ALE paradigms, and the overall best per column is additionally <u>underlined</u>. PIP-Net's non-negative, sparse
         decision head consistently yields the smallest and fastest explanations across all three datasets, while Gaussian and cosine-based
         spatial paradigms (Scaled/Spherical HIA) tighten the relative bound at the cost of runtime &mdash; and time out entirely on CUB-200,
@@ -339,7 +339,15 @@
       </p>
     </div>
 
-    <h4 class="title is-5 has-text-centered mt-5">Oxford Flowers 102</h4>
+    <div class="tabs is-toggle is-toggle-rounded is-centered mt-5" id="resultsTabs">
+      <ul>
+        <li class="is-active" data-target="results-flowers"><a>Oxford Flowers 102</a></li>
+        <li data-target="results-pets"><a>Oxford IIIT Pets</a></li>
+        <li data-target="results-cub200"><a>CUB200</a></li>
+      </ul>
+    </div>
+
+    <div class="results-panel" id="results-flowers">
     <div class="table-container">
       <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
         <thead>
@@ -364,8 +372,9 @@
         </tbody>
       </table>
     </div>
+    </div>
 
-    <h4 class="title is-5 has-text-centered mt-5">Oxford IIIT Pets</h4>
+    <div class="results-panel is-hidden" id="results-pets">
     <div class="table-container">
       <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
         <thead>
@@ -390,8 +399,9 @@
         </tbody>
       </table>
     </div>
+    </div>
 
-    <h4 class="title is-5 has-text-centered mt-5">CUB200</h4>
+    <div class="results-panel is-hidden" id="results-cub200">
     <div class="table-container">
       <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
         <thead>
@@ -422,6 +432,23 @@
     </div>
     <p class="is-size-7 has-text-centered mt-3">Both cosine-manifold and Gaussian spatial-constraint ALEs exceeded the computation
       time budget on CUB-200, mirroring the scalability limitation already observed as class count grows.</p>
+    </div>
+
+    <script>
+      (function () {
+        var tabs = document.querySelectorAll('#resultsTabs li');
+        tabs.forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            tabs.forEach(function (t) { t.classList.remove('is-active'); });
+            tab.classList.add('is-active');
+            document.querySelectorAll('.results-panel').forEach(function (panel) {
+              panel.classList.add('is-hidden');
+            });
+            document.getElementById(tab.getAttribute('data-target')).classList.remove('is-hidden');
+          });
+        });
+      })();
+    </script>
   </div>
   </section>
 
