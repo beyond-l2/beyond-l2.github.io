@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="title" content="Beyond L2: Generalizing Abductive Latent Explanations to Diverse Prototype-Based Architectures">
+  <meta name="description" content="We generalize Abductive Latent Explanations (ALEs) beyond Euclidean latent spaces to spherical (cosine similarity), Gaussian, and probability-simplex prototype architectures, enabling the first rigorous formal-XAI comparison across diverse prototype-based networks.">
+  <meta name="keywords" content="Formal XAI, Interpretable Machine Learning, Abductive Explanations, Case-Based Reasoning, Prototype Networks">
+  <meta name="author" content="Jules Soria, Alban Grastien, Romain Xu-Darme, Julien Girard-Satabin, Zakaria Chihani, Daniela Cancila">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Université Paris-Saclay, CEA, List">
+  <meta property="og:title" content="Beyond L2: Generalizing Abductive Latent Explanations to Diverse Prototype-Based Architectures">
+  <meta property="og:description" content="We generalize Abductive Latent Explanations (ALEs) beyond Euclidean latent spaces to spherical, Gaussian, and probability-simplex prototype architectures.">
+  <meta property="og:url" content="https://beyond-l2.github.io/">
+  <meta property="og:image" content="static/images/hia_gaussian.png">
+  <meta property="og:image:width" content="1920">
+  <meta property="og:image:height" content="1129">
+  <meta property="og:image:alt" content="Gaussian Hypersphere Intersection Approximation">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Beyond L2: Generalizing Abductive Latent Explanations to Diverse Prototype-Based Architectures">
+  <meta name="twitter:description" content="Extending formal, solver-free Abductive Latent Explanations to cosine/spherical, Gaussian, and simplex prototype architectures.">
+  <meta name="twitter:image" content="static/images/hia_gaussian.png">
+
+  <meta name="citation_title" content="Beyond L2: Generalizing Abductive Latent Explanations to Diverse Prototype-Based Architectures">
+  <meta name="citation_author" content="Soria, Jules">
+  <meta name="citation_author" content="Grastien, Alban">
+  <meta name="citation_author" content="Xu-Darme, Romain">
+  <meta name="citation_author" content="Girard-Satabin, Julien">
+  <meta name="citation_author" content="Chihani, Zakaria">
+  <meta name="citation_author" content="Cancila, Daniela">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="European Conference on Machine Learning and Principles and Practice of Knowledge Discovery in Databases (ECML PKDD)">
+
+  <title>Beyond L2: Generalizing Abductive Latent Explanations to Diverse Prototype-Based Architectures</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍺</text></svg>">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Beyond L2: Generalizing Abductive Latent Explanations to Diverse Prototype-Based Architectures",
+    "author": [
+      {"@type": "Person", "name": "Jules Soria"},
+      {"@type": "Person", "name": "Alban Grastien"},
+      {"@type": "Person", "name": "Romain Xu-Darme"},
+      {"@type": "Person", "name": "Julien Girard-Satabin"},
+      {"@type": "Person", "name": "Zakaria Chihani"},
+      {"@type": "Person", "name": "Daniela Cancila"}
+    ],
+    "datePublished": "2026-01-01",
+    "publisher": {"@type": "Organization", "name": "Springer"},
+    "keywords": ["XAI", "Formal Methods", "Prototype Networks", "Abductive Explanations", "Non-Euclidean Geometry"]
+  }
+  </script>
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true
+    }
+  };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Beyond $L_2$: Generalizing Abductive Latent Explanations<br>to Diverse Prototype-Based Architectures</h1>
+
+            <div class="is-size-5 publication-authors">
+
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=1Qctec0AAAAJ" target="_blank" class="has-text-primary">
+                  <strong>Jules Soria</strong>
+                </a>
+
+                <a href="mailto:jules.soria@cea.fr" style="text-decoration: none; color: inherit;" title="Correspondence: jules[dot]soria[at]cea[dot]fr">
+                  <span class="icon is-small" style="vertical-align: super; font-size: 0.6em;">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </a>,
+              </span>
+
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=87u0x6UAAAAJ" target="_blank">
+                  Alban Grastien
+                </a>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=QB4YkI0AAAAJ" target="_blank">
+                  Romain Xu-Darme
+                </a>,
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=erWN5TwAAAAJ" target="_blank">
+                  Julien Girard-Satabin
+                </a>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=mgzCh30AAAAJ" target="_blank">
+                  Zakaria Chihani
+                </a>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=ucNJ23sAAAAJ" target="_blank">
+                  Daniela Cancila
+                </a>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Université Paris-Saclay, CEA, List, F-91120, Palaiseau, France</span>
+            </div>
+
+            <div class="is-size-5 publication-authors" style="margin-top: 10px; font-weight: bold;">
+              <span class="author-block">ECML PKDD 2026</span>
+            </div>
+
+            <div class="is-size-6 publication-authors" style="margin-top: 6px; font-style: italic; opacity: 0.85;">
+              <span class="author-block">
+                Follow-up to our AAAI 2026 paper,
+                <a href="https://formal-ale.github.io/" target="_blank">Formal Abductive Latent Explanations for Prototype-Based Networks</a>
+              </span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="static/pdfs/paper.pdf" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                  </a>
+                </span>
+
+                <span class="link-block">
+                  <a href="https://github.com/julsoria/beyond_l2" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                  </a>
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Prototype-based neural networks are hailed as interpretable-by-design architectures. Recently, <strong>Abductive Latent Explanations (ALE)</strong> were introduced to provide formal, mathematically guaranteed explanations that leverage the intrinsic structure of these networks to ensure both predictive safety and human readability. ALEs rely on computing tight bounds on latent space distances to produce formal explanations.
+            </p>
+            <p>
+              However, existing ALE formulations are rigidly confined to Euclidean latent spaces. This leaves a critical gap: modern state-of-the-art architectures increasingly rely on non-Euclidean representations &mdash; spherical metrics, Gaussian densities, and dimensional projections &mdash; rendering current formal explanation methods incompatible. In this work, we <strong>generalize the ALE framework to support non-Euclidean prototype architectures</strong>.
+            </p>
+            <p>
+              For each geometric variant, we systematically derive how to either map the architecture to existing bounds or construct novel, architecture-specific bounding algorithms. We validate our theoretical constructions by computing subset-minimal formal explanations on fully trained image classifiers. By unifying these diverse models under a single formal framework, we enable the first rigorous, cross-architecture comparison of their interpretability.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background-color: #f5f5f5;">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Geometric Bounding Mechanisms</h2>
+        <div class="content has-text-justified">
+          <p>
+            The original ALE framework bounds a latent patch's location using intersections of <strong>Euclidean</strong> hyperspheres.
+            We show that the same principle &mdash; approximate the intersection of "uncertainty regions" around known prototypes by a single,
+            tighter region &mdash; carries over to two very different geometries.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+
+      <div class="column is-6">
+        <div class="box" style="height: 100%;">
+          <h4 class="title is-5 has-text-centered">1. Spherical Cap Intersection (Cosine Similarity)</h4>
+          <div class="content">
+            <p>
+              Architectures such as TesNet use cosine similarity, i.e., a dot product on the unit hypersphere. Cosine similarity is not a
+              distance metric, but the <strong>geodesic angular distance</strong> $d_\angle(x,y) = \arccos(x \cdot y)$ is. We approximate the
+              intersection of two "spherical caps" around known prototypes by a single minimal-radius bounding cap $(\mathbf{p}_{int}, r_{int})$,
+              which provably shrinks every time a new prototype is added:
+            </p>
+            $$
+            \underline{\text{sim}}_{\mathcal{E}}(z_l,p_k) = \cos\!\Big(\min\big(\pi,\ d_\angle(p_k,\mathbf{p}_{int})+r_{int}\big)\Big)
+            $$
+            $$
+            \overline{\text{sim}}_{\mathcal{E}}(z_l,p_k) = \cos\!\Big(d_\angle(p_k,\mathbf{p}_{int})-r_{int}\Big)
+            $$
+            <figure class="image is-inline-block has-text-centered" style="width:100%; margin-top: 1rem;">
+              <img src="static/images/hia_cosine.png" alt="Spherical Cap Intersection Approximation"
+                   style="max-height: 340px; width: auto; max-width: 100%; border-radius: 5px; background:white; border: 1px solid #ddd;">
+            </figure>
+            <p class="is-size-7 mt-2">
+              <strong>Figure 1:</strong> Two spherical caps (blue, orange), each centered on a known prototype with radius equal to its
+              distance to the latent patch $z_l$, are bounded by a single tighter cap (dashed red), giving tighter bounds on the angular
+              distance to any other prototype $p_k$.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-6">
+        <div class="box" style="height: 100%;">
+          <h4 class="title is-5 has-text-centered">2. Gaussian Hypersphere Intersection</h4>
+          <div class="content">
+            <p>
+              Gaussian prototype networks (e.g., an Isotropic Gaussian ProtoPNet) replace distance with a negative log-likelihood. Since any
+              valid similarity function $S$ is a strictly monotonic transform of an underlying Euclidean distance, we invert it back to a true
+              radius, apply the existing Hypersphere Intersection Approximation, then map the tightened bound back into activation space:
+            </p>
+            $$
+            d_{\text{Euclid}}(z_l,\mu_j) = \sigma_j\, S^{-1}\big(\text{sim}(z_l,p_j)\big)
+            $$
+            $$
+            \overline{\text{sim}}_{\mathcal{E}}(z_l,p_k) = S\big(\underline{d}_{\Sigma_k}\big), \qquad
+            \underline{\text{sim}}_{\mathcal{E}}(z_l,p_k) = S\big(\overline{d}_{\Sigma_k}\big)
+            $$
+            <figure class="image is-inline-block has-text-centered" style="width:100%; margin-top: 1rem;">
+              <img src="static/images/hia_gaussian.png" alt="Gaussian Hypersphere Intersection Approximation"
+                   style="max-height: 340px; width: auto; max-width: 100%; border-radius: 5px; background:white; border: 1px solid #ddd;">
+            </figure>
+            <p class="is-size-7 mt-2">
+              <strong>Figure 2:</strong> Each prototype $\mu_j$ is defined by its anchor and variance $\sigma_j$ (shaded layer). The red dotted
+              circle is the hypersphere approximating the intersection of the two Gaussian "uncertainty regions" in Euclidean metric space.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </section>
+
+  <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">Generalizing Beyond Euclidean Geometry</h2>
+        <div class="content has-text-justified">
+          <p>
+            Modern prototype-part networks have quietly diverged from ProtoPNet's original Euclidean, max-pooled formulation: some
+            switch similarity function (cosine instead of $L_2$), some model prototypes as Gaussian distributions rather than point-vectors,
+            and some replace max-pooling with focal pooling or a softmax-based probability simplex. Each variant breaks a different
+            assumption the original ALE bounds relied on. We systematically walk through each axis of variation below and derive a sound
+            bounding mechanism for it &mdash; either by mapping it back to an existing paradigm (e.g., Gaussian &rarr; Euclidean) or by deriving a
+            new one from scratch (e.g., cosine &rarr; spherical caps, softmax &rarr; simplex mass conservation, focal pooling &rarr; aggregate
+            statistics over spatial bounds).
+          </p>
+        </div>
+
+        <div class="table-container">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="margin-top: 1rem;">
+            <thead>
+              <tr>
+                <th>Architecture</th>
+                <th>Similarity</th>
+                <th>Gaussian</th>
+                <th>Pooling</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>ProtoPNet</td><td>Euclidean</td><td class="has-text-centered">&times;</td><td>Max</td></tr>
+              <tr><td>ProtoPool</td><td>Euclidean</td><td class="has-text-centered">&times;</td><td>Focal</td></tr>
+              <tr><td>TesNet</td><td>Cosine</td><td class="has-text-centered">&times;</td><td>Max</td></tr>
+              <tr><td>Deformable ProtoPNet</td><td>Cosine</td><td class="has-text-centered">&times;</td><td>Max</td></tr>
+              <tr><td>PIP-Net</td><td>Cosine&#8902;</td><td class="has-text-centered">&times;</td><td>Max</td></tr>
+              <tr><td>ProtoGMM</td><td>Euclidean</td><td class="has-text-centered">&check;</td><td>Max</td></tr>
+              <tr><td>MGProto</td><td>Euclidean</td><td class="has-text-centered">&check;</td><td>Max</td></tr>
+              <tr><td>HyperPG</td><td>Cosine</td><td class="has-text-centered">&check;</td><td>Max</td></tr>
+              <tr><td>ProtoPFormer</td><td>Euclidean</td><td class="has-text-centered">&check;</td><td>Max</td></tr>
+              <tr><td>NonParam</td><td>Cosine</td><td class="has-text-centered">&times;</td><td>Max</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="is-size-7">&#8902; Special case: involves dimensional projection (softmax over the prototype simplex).</p>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <section class="section" style="background-color: #f5f5f5;">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Experimental Results</h2>
+    <div class="content has-text-justified">
+      <p>
+        We trained a ProtoPNet, PIP-Net, TesNet, and Isotropic Gaussian ProtoPNet (plus ProtoPool on CUB200) using the
+        <strong>CaBRNet</strong> library, and computed subset-minimal ALEs for every applicable paradigm on three fine-grained datasets:
+        Oxford Flowers 102, Oxford IIIT Pets, and CUB200. For each architecture, <strong>bold</strong> marks the best (smallest) result
+        among its own ALE paradigms, and the overall best per column is additionally <u>underlined</u>. PIP-Net's non-negative, sparse
+        decision head consistently yields the smallest and fastest explanations across all three datasets, while Gaussian and cosine-based
+        spatial paradigms (Scaled/Spherical HIA) tighten the relative bound at the cost of runtime &mdash; and time out entirely on CUB-200,
+        exposing a scalability limit as the number of classes grows.
+      </p>
+    </div>
+
+    <h4 class="title is-5 has-text-centered mt-5">Oxford Flowers 102</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+          <tr><th>Architecture</th><th>Acc. (%)</th><th>ALE</th><th>Abs. Size</th><th>Rel. Size (%)</th><th>Time (s)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="3">ProtoPNet</td><td rowspan="3">82.8</td><td>Top-k</td><td><strong>199 &plusmn; 254</strong></td><td>19.5 &plusmn; 24.9</td><td><strong>0.327 &plusmn; 0.406</strong></td></tr>
+          <tr><td>TI</td><td>5273 &plusmn; 6075</td><td>32.3 &plusmn; 37.2</td><td>60.434 &plusmn; 61.289</td></tr>
+          <tr><td>HIA</td><td>675 &plusmn; 361</td><td><strong>4.1 &plusmn; 2.2</strong></td><td>11.781 &plusmn; 13.676</td></tr>
+
+          <tr><td rowspan="3">PIP-Net</td><td rowspan="3">80.5</td><td>Top-k</td><td>135 &plusmn; 29</td><td>17.6 &plusmn; 3.8</td><td>1.229 &plusmn; 1.413</td></tr>
+          <tr><td>Sparse</td><td><strong><u>103 &plusmn; 55</u></strong></td><td>13.5 &plusmn; 7.2</td><td><strong><u>0.075 &plusmn; 0.089</u></strong></td></tr>
+          <tr><td>Simplex</td><td>250 &plusmn; 103</td><td><strong><u>0.2 &plusmn; 0.1</u></strong></td><td>0.286 &plusmn; 0.069</td></tr>
+
+          <tr><td rowspan="3">TesNet</td><td rowspan="3">81.9</td><td>Top-k</td><td>295 &plusmn; 166</td><td>28.9 &plusmn; 16.3</td><td><strong>0.341 &plusmn; 0.224</strong></td></tr>
+          <tr><td>Cosine TI</td><td>10438 &plusmn; 2862</td><td>64.0 &plusmn; 17.5</td><td>202.580 &plusmn; 64.435</td></tr>
+          <tr><td>Spherical HIA</td><td><strong>187 &plusmn; 51</strong></td><td><strong>1.1 &plusmn; 0.3</strong></td><td>4.491 &plusmn; 2.827</td></tr>
+
+          <tr><td rowspan="3">Gaussian</td><td rowspan="3">72.8</td><td>Top-k</td><td><strong>257 &plusmn; 237</strong></td><td>25.2 &plusmn; 23.2</td><td><strong>0.651 &plusmn; 0.563</strong></td></tr>
+          <tr><td>Scaled TI</td><td>1022 &plusmn; 2035</td><td>6.3 &plusmn; 12.5</td><td>20.490 &plusmn; 44.649</td></tr>
+          <tr><td>Scaled HIA</td><td>931 &plusmn; 1770</td><td><strong>5.7 &plusmn; 10.8</strong></td><td>157.373 &plusmn; 312.566</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="title is-5 has-text-centered mt-5">Oxford IIIT Pets</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+          <tr><th>Architecture</th><th>Acc. (%)</th><th>ALE</th><th>Abs. Size</th><th>Rel. Size (%)</th><th>Time (s)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="3">ProtoPNet</td><td rowspan="3">89.3</td><td>Top-k</td><td><strong>99 &plusmn; 72</strong></td><td>26.6 &plusmn; 19.4</td><td><strong>0.101 &plusmn; 0.06</strong></td></tr>
+          <tr><td>TI</td><td>7869 &plusmn; 6537</td><td>43.4 &plusmn; 36.1</td><td>105.805 &plusmn; 83.69</td></tr>
+          <tr><td>HIA</td><td>733 &plusmn; 204</td><td><strong>4.0 &plusmn; 1.1</strong></td><td>3.098 &plusmn; 1.49</td></tr>
+
+          <tr><td rowspan="3">PIP-Net</td><td rowspan="3">88.7</td><td>Top-k</td><td>131 &plusmn; 13</td><td>17.0 &plusmn; 1.7</td><td>1.586 &plusmn; 0.231</td></tr>
+          <tr><td>Sparse</td><td><strong>30 &plusmn; 16</strong></td><td>4.0 &plusmn; 2.0</td><td><strong>0.076 &plusmn; 0.038</strong></td></tr>
+          <tr><td>Simplex</td><td>190 &plusmn; 30</td><td><strong><u>0.1 &plusmn; 0.0</u></strong></td><td>0.252 &plusmn; 0.040</td></tr>
+
+          <tr><td rowspan="3">TesNet</td><td rowspan="3">93.2</td><td>Top-k</td><td><strong><u>16 &plusmn; 18</u></strong></td><td>4.4 &plusmn; 4.8</td><td><strong><u>0.027 &plusmn; 0.011</u></strong></td></tr>
+          <tr><td>Cosine TI</td><td>1750 &plusmn; 2149</td><td>9.7 &plusmn; 11.9</td><td>26.565 &plusmn; 41.140</td></tr>
+          <tr><td>Spherical HIA</td><td>578 &plusmn; 126</td><td><strong>3.2 &plusmn; 0.7</strong></td><td>68.798 &plusmn; 20.136</td></tr>
+
+          <tr><td rowspan="3">Gaussian</td><td rowspan="3">87.5</td><td>Top-k</td><td><strong>63 &plusmn; 34</strong></td><td>17.1 &plusmn; 9.2</td><td><strong>0.156 &plusmn; 0.074</strong></td></tr>
+          <tr><td>Scaled HIA</td><td>1126 &plusmn; 1327</td><td><strong>6.2 &plusmn; 7.3</strong></td><td>142.364 &plusmn; 254.248</td></tr>
+          <tr><td>Scaled TI</td><td>1215 &plusmn; 1407</td><td>6.7 &plusmn; 7.8</td><td>14.256 &plusmn; 35.297</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="title is-5 has-text-centered mt-5">CUB200</h4>
+    <div class="table-container">
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+          <tr><th>Architecture</th><th>Acc. (%)</th><th>ALE</th><th>Abs. Size</th><th>Rel. Size (%)</th><th>Time (s)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="3">ProtoPNet</td><td rowspan="3">83.9</td><td>Top-k</td><td><strong>314 &plusmn; 218</strong></td><td>15.7 &plusmn; 10.9</td><td><strong>0.997 &plusmn; 0.732</strong></td></tr>
+          <tr><td>TI</td><td>1950 &plusmn; 5860</td><td>2.0 &plusmn; 6.0</td><td>213.616 &plusmn; 666.449</td></tr>
+          <tr><td>HIA</td><td>1349 &plusmn; 3769</td><td><strong>1.4 &plusmn; 3.8</strong></td><td>2446.927 &plusmn; 11363.445</td></tr>
+
+          <tr><td rowspan="3">ProtoPool</td><td rowspan="3">82.5</td><td>Top-k</td><td><strong>67 &plusmn; 44</strong></td><td>30.5 &plusmn; 20.3</td><td><strong><u>0.195 &plusmn; 0.111</u></strong></td></tr>
+          <tr><td>TI</td><td>893 &plusmn; 522</td><td>45.5 &plusmn; 26.6</td><td>7.502 &plusmn; 3.505</td></tr>
+          <tr><td>HIA</td><td>272 &plusmn; 315</td><td><strong>13.8 &plusmn; 16.1</strong></td><td>7.666 &plusmn; 12.973</td></tr>
+
+          <tr><td rowspan="3">PIP-Net</td><td rowspan="3">82.7</td><td>Top-k</td><td><strong><u>18 &plusmn; 38</u></strong></td><td>2.3 &plusmn; 4.9</td><td><strong>1.031 &plusmn; 0.910</strong></td></tr>
+          <tr><td>Sparse</td><td>216 &plusmn; 111</td><td>28.1 &plusmn; 14.4</td><td>1.064 &plusmn; 1.025</td></tr>
+          <tr><td>Simplex</td><td>955 &plusmn; 339</td><td><strong><u>0.2 &plusmn; 0.1</u></strong></td><td>50.427 &plusmn; 28.036</td></tr>
+
+          <tr><td>TesNet</td><td>86.8</td><td>Top-k</td><td><strong>58 &plusmn; 156</strong></td><td><strong>2.9 &plusmn; 7.8</strong></td><td><strong>2.078 &plusmn; 1.947</strong></td></tr>
+          <tr><td></td><td></td><td>Cosine TI</td><td colspan="3" class="has-text-centered"><code>Timeout</code></td></tr>
+          <tr><td></td><td></td><td>Spherical HIA</td><td colspan="3" class="has-text-centered"><code>Timeout</code></td></tr>
+
+          <tr><td>Gaussian</td><td>81.4</td><td>Top-k</td><td><strong>95 &plusmn; 211</strong></td><td><strong>4.7 &plusmn; 10.5</strong></td><td><strong>0.340 &plusmn; 0.510</strong></td></tr>
+          <tr><td></td><td></td><td>Scaled TI</td><td colspan="3" class="has-text-centered"><code>Timeout</code></td></tr>
+          <tr><td></td><td></td><td>Scaled HIA</td><td colspan="3" class="has-text-centered"><code>Timeout</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="is-size-7 has-text-centered mt-3">Both cosine-manifold and Gaussian spatial-constraint ALEs exceeded the computation
+      time budget on CUB-200, mirroring the scalability limitation already observed as class count grows.</p>
+  </div>
+  </section>
+
+  <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Framework</h2>
+        <div class="content has-text-justified">
+          <p>
+            Our models were trained using <strong>CaBRNet</strong> (<u>Ca</u>se-<u>B</u>ased <u>R</u>easoning <u>Net</u>work),
+            an open-source library designed for developing and evaluating prototype-based models.
+          </p>
+
+          <div class="has-text-centered">
+            <a href="https://github.com/aiser-team/cabrnet" target="_blank" class="button is-dark is-rounded">
+              <span class="icon" style="display: flex; align-items: center; justify-content: center;">
+                <img src="static/images/cabrnet_logo.svg"
+                    alt="CaBRNet Logo"
+                    style="height: 1.2rem; width: 1.2rem; border-radius: 50%; object-fit: cover;">
+              </span>
+              <span>View CaBRNet Repository</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@inproceedings{Soria2026beyond,
+  title={Beyond $L_2$: Generalizing Abductive Latent Explanations to Diverse Prototype-Based Architectures},
+  author={Soria, Jules and Grastien, Alban and Xu-Darme, Romain and Girard-Satabin, Julien and Chihani, Zakaria and Cancila, Daniela},
+  booktitle={Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2026},
+  publisher={Springer},
+  year={2026}
+  }</code></pre>
+    </div>
+  </section>
+
+  <section class="section" id="Acknowledgements">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Acknowledgements</h2>
+    <p>
+      This publication was made possible by the use of the <strong>FactoryIA supercomputer</strong>, financially supported by the Ile-De-France Regional Council.
+      This work was also supported by the <strong>SAIF project</strong>, funded by the "France 2030" government investment plan managed by the French National Research Agency, under the reference <strong>ANR-23-PEIA-0006</strong>.
+    </p>
+  </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+          This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+          Source code based on <a href="https://nerfies.github.io">Nerfies</a>.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
