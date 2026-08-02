@@ -1186,6 +1186,13 @@
                 <text x="240" y="228" font-size="12" fill="#7a7a7a" text-anchor="middle" font-style="italic">l=3</text>
                 <text x="325" y="228" font-size="12" fill="#7a7a7a" text-anchor="middle" font-style="italic">l=4</text>
                 <text x="410" y="228" font-size="12" fill="#7a7a7a" text-anchor="middle" font-style="italic">l=5</text>
+                <!-- the cross-subtraction, made literal: one path runs from the max's own
+                upper bound down to the average's lower bound (giving the activation's upper
+                bound); the other runs from the max's lower bound down to the average's upper
+                bound (giving its lower bound) -- routed through the empty gutter right of the
+                amber box so neither path crosses another patch -->
+                <polyline points="178,50 197,50 197,148" fill="none" stroke="#7c5cbf" stroke-width="1.2" stroke-dasharray="3,2"/>
+                <polyline points="178,100 205,100 205,109" fill="none" stroke="#7c5cbf" stroke-width="1.2" stroke-dasharray="3,2"/>
                 <!-- the result: cross-subtracting the amber (max) and teal (mean) bounds gives
                 the focal activation's own lower/upper bound, drawn as its own interval so it
                 reads as an answer, not just another input -->
