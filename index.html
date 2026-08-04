@@ -1174,7 +1174,6 @@
               <svg viewBox="0 0 580 235" width="100%" style="max-width:520px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
                 <line x1="40" y1="210" x2="540" y2="210" stroke="#c3c3c3" stroke-width="1.2"/>
                 <rect x="40" y="109" width="407" height="39" fill="#5b9aa0" opacity="0.18" stroke="#5b9aa0" stroke-width="1" stroke-dasharray="4,2"/>
-                <text x="449" y="123" font-size="13" fill="#3d7a80" text-anchor="start" font-style="italic">E[sim]</text>
                 <rect x="47" y="120" width="46" height="40" rx="6" fill="#c9d3de" opacity="0.7" stroke="#8a9bb0" stroke-width="1.2"/>
                 <rect x="132" y="50" width="46" height="50" rx="6" fill="#f5c26b" opacity="0.9" stroke="#c9891f" stroke-width="1.6"/>
                 <rect x="217" y="140" width="46" height="40" rx="6" fill="#c9d3de" opacity="0.7" stroke="#8a9bb0" stroke-width="1.2"/>
@@ -1186,19 +1185,18 @@
                 <text x="240" y="228" font-size="12" fill="#7a7a7a" text-anchor="middle" font-style="italic">l=3</text>
                 <text x="325" y="228" font-size="12" fill="#7a7a7a" text-anchor="middle" font-style="italic">l=4</text>
                 <text x="410" y="228" font-size="12" fill="#7a7a7a" text-anchor="middle" font-style="italic">l=5</text>
-                <!-- the cross-subtraction, made literal: one path runs from the max's own
-                upper bound down to the average's lower bound (giving the activation's upper
-                bound); the other runs from the max's lower bound down to the average's upper
-                bound (giving its lower bound) -- routed through the empty gutter right of the
-                amber box so neither path crosses another patch -->
-                <polyline points="178,50 197,50 197,148" fill="none" stroke="#7c5cbf" stroke-width="1.2" stroke-dasharray="3,2"/>
-                <polyline points="178,100 205,100 205,109" fill="none" stroke="#7c5cbf" stroke-width="1.2" stroke-dasharray="3,2"/>
+                <!-- the cross-subtraction, made literal and traced all the way through: each
+                path starts at the max's own bound edge, touches the average's opposite bound
+                edge, then continues to the exact level it produces on the result bracket --
+                nothing floats disconnected from the values it's derived from. Drawn before the
+                text/rect below so those render on top wherever a path passes behind them. -->
+                <polyline points="178,50 197,50 197,148 488,112" fill="none" stroke="#7c5cbf" stroke-width="1.2" stroke-dasharray="3,2"/>
+                <polyline points="178,100 205,100 205,109 488,201" fill="none" stroke="#7c5cbf" stroke-width="1.2" stroke-dasharray="3,2"/>
+                <text x="449" y="123" font-size="13" fill="#3d7a80" text-anchor="start" font-style="italic">E[sim]</text>
                 <!-- the result: cross-subtracting the amber (max) and teal (mean) bounds gives
                 the focal activation's own lower/upper bound, drawn as its own interval so it
                 reads as an answer, not just another input -->
                 <text x="463" y="160" font-size="20" fill="#9a9a9a" text-anchor="middle">&#8722;</text>
-                <line x1="470" y1="112" x2="488" y2="112" stroke="#7c5cbf" stroke-width="1" stroke-dasharray="2,2"/>
-                <line x1="470" y1="201" x2="488" y2="201" stroke="#7c5cbf" stroke-width="1" stroke-dasharray="2,2"/>
                 <rect x="488" y="112" width="46" height="89" rx="6" fill="#e8dff5" opacity="0.85" stroke="#7c5cbf" stroke-width="1.8"/>
                 <text x="540" y="118" font-size="14" fill="#5a3f8f" text-anchor="start" font-style="italic" text-decoration="overline">a</text>
                 <text x="540" y="207" font-size="14" fill="#5a3f8f" text-anchor="start" font-style="italic" text-decoration="underline">a</text>
