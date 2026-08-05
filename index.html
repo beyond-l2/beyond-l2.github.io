@@ -1171,16 +1171,18 @@
             \overline{a}_{\mathcal{E},j} = \max_{l\in L}\overline{\text{sim}}_{\mathcal{E}}(z_l,p_j) - \mathbb{E}_{l\in L}\big[\underline{\text{sim}}_{\mathcal{E}}(z_l,p_j)\big]
             $$
             <figure class="image is-inline-block has-text-centered" style="width:100%; margin-top: 1rem;">
-              <svg viewBox="0 0 580 235" width="100%" style="max-width:520px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
-                <line x1="40" y1="210" x2="540" y2="210" stroke="#c3c3c3" stroke-width="1.2"/>
-                <!-- every reference level is drawn as its own full-width, purely horizontal
-                band or line -- never a diagonal -- so each one is trivially level with, and
-                comparable against, the exact edge it represents. Drawn first so the patches
-                and bracket (below) render on top wherever they overlap one. -->
+              <svg viewBox="0 0 600 235" width="100%" style="max-width:540px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+                <!-- every bound-defining edge -- on the inputs AND on the two outputs -- sits on one
+                of these four full-width guide levels, drawn first so each rectangle's own top/bottom
+                edge visibly lands on the exact line it derives from; no connector lines needed. -->
+                <line x1="40" y1="50" x2="575" y2="50" stroke="#c3c3c3" stroke-width="0.8" stroke-dasharray="2,3" opacity="0.5"/>
+                <line x1="40" y1="100" x2="575" y2="100" stroke="#c3c3c3" stroke-width="0.8" stroke-dasharray="2,3" opacity="0.5"/>
+                <line x1="40" y1="109" x2="575" y2="109" stroke="#c3c3c3" stroke-width="0.8" stroke-dasharray="2,3" opacity="0.5"/>
+                <line x1="40" y1="148" x2="575" y2="148" stroke="#c3c3c3" stroke-width="0.8" stroke-dasharray="2,3" opacity="0.5"/>
+                <line x1="40" y1="210" x2="575" y2="210" stroke="#c3c3c3" stroke-width="1.2"/>
+                <line x1="455" y1="32" x2="455" y2="215" stroke="#d8d8d8" stroke-width="1" stroke-dasharray="3,2"/>
                 <rect x="40" y="50" width="407" height="50" fill="#f5c26b" opacity="0.12"/>
                 <rect x="40" y="109" width="407" height="39" fill="#5b9aa0" opacity="0.18" stroke="#5b9aa0" stroke-width="1" stroke-dasharray="4,2"/>
-                <line x1="40" y1="112" x2="488" y2="112" stroke="#7c5cbf" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
-                <line x1="40" y1="201" x2="488" y2="201" stroke="#7c5cbf" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
                 <rect x="47" y="120" width="46" height="40" rx="6" fill="#c9d3de" opacity="0.7" stroke="#8a9bb0" stroke-width="1.2"/>
                 <rect x="132" y="50" width="46" height="50" rx="6" fill="#f5c26b" opacity="0.9" stroke="#c9891f" stroke-width="1.6"/>
                 <rect x="217" y="140" width="46" height="40" rx="6" fill="#c9d3de" opacity="0.7" stroke="#8a9bb0" stroke-width="1.2"/>
@@ -1197,20 +1199,23 @@
                 <text x="325" y="228" font-size="12" fill="#7a7a7a" text-anchor="middle" font-style="italic">l=4</text>
                 <text x="410" y="228" font-size="12" fill="#7a7a7a" text-anchor="middle" font-style="italic">l=9</text>
                 <text x="449" y="123" font-size="13" fill="#3d7a80" text-anchor="start" font-style="italic">E[sim]</text>
-                <!-- the result: cross-subtracting the amber (max) and teal (mean) bounds gives
-                the focal activation's own lower/upper bound, drawn as its own interval so it
-                reads as an answer, not just another input -->
-                <text x="463" y="160" font-size="20" fill="#9a9a9a" text-anchor="middle">&#8722;</text>
-                <rect x="488" y="112" width="46" height="89" rx="6" fill="#e8dff5" opacity="0.85" stroke="#7c5cbf" stroke-width="1.8"/>
-                <text x="540" y="118" font-size="14" fill="#5a3f8f" text-anchor="start" font-style="italic" text-decoration="overline">a</text>
-                <text x="540" y="207" font-size="14" fill="#5a3f8f" text-anchor="start" font-style="italic" text-decoration="underline">a</text>
-                <text x="511" y="228" font-size="12" fill="#5a3f8f" text-anchor="middle" font-style="italic">a&#11388;</text>
+                <!-- two separate rectangles, not one merged interval: the tall one's top edge sits
+                on the max's ceiling (y=50) and its bottom edge on the mean's floor (y=148), giving
+                the upper bound; the short one runs from the max's floor (y=100) to the mean's
+                ceiling (y=109), giving the lower bound -- each literally starts and ends where the
+                math says it should, read off the same four guide lines as the inputs. -->
+                <rect x="468" y="50" width="42" height="98" rx="6" fill="#e8dff5" opacity="0.85" stroke="#7c5cbf" stroke-width="1.8"/>
+                <rect x="520" y="100" width="42" height="9" rx="3" fill="#f3ecfa" opacity="0.95" stroke="#9b7fc9" stroke-width="1.8"/>
+                <text x="489" y="44" font-size="14" fill="#5a3f8f" text-anchor="middle" font-style="italic" text-decoration="overline">a</text>
+                <text x="568" y="105" font-size="14" fill="#5a3f8f" text-anchor="start" font-style="italic" text-decoration="underline">a</text>
+                <text x="515" y="228" font-size="12" fill="#5a3f8f" text-anchor="middle" font-style="italic">a&#11388;</text>
               </svg>
             </figure>
             <p class="is-size-7 mt-2">
               <strong>Figure 4:</strong> per-patch similarity bounds over a $3\times3$ grid (gray bars, $l=1$ to $9$); the highest-ceiling
-              patch (amber) sets the max term, the teal band marks the bound on their mean. Both are shown as full-width levels (amber, teal)
-              so the focal activation's own bound (violet), $\underline{a}_j$ to $\overline{a}_j$, can be read directly off the same axis.
+              patch (amber) sets the max term, the teal band bounds their mean. The two violet rectangles are the focal activation's own
+              bounds: the tall one runs from the max's ceiling down to the mean's floor, giving $\overline{a}_j$; the short one runs from
+              the max's floor to the mean's ceiling, giving $\underline{a}_j$.
             </p>
           </div>
         </div>
