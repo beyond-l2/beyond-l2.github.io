@@ -1224,9 +1224,9 @@
                 <label>&#963;&#8342; <input type="range" id="hiaSigK" min="0.1" max="4" step="0.1" value="1.2"></label>
               </div>
               <div class="hia-readout" style="margin-top:0.6rem; font-size:0.78rem; font-family:monospace; background:#f7f7f7; border-radius:5px; padding:0.5rem 0.7rem; line-height:1.6;">
-                <span style="color:#1d5fc2;">R&#8321; = d(z,&#956;&#8321;) = <strong id="hiaReadoutR1">&hellip;</strong></span><br>
-                <span style="color:#c9891f;">R&#8322; = d(z,&#956;&#8322;) = <strong id="hiaReadoutR2">&hellip;</strong></span><br>
-                <span style="color:#c0392b;">d(z,&#956;&#8342;) &#8712; <strong id="hiaBoundReadout">[&hellip;]</strong></span>
+                <span style="color:#1d5fc2;">R&#8321; = d(z,&#956;&#8321;)/&#963;&#8321; = <strong id="hiaReadoutR1">&hellip;</strong></span><br>
+                <span style="color:#c9891f;">R&#8322; = d(z,&#956;&#8322;)/&#963;&#8322; = <strong id="hiaReadoutR2">&hellip;</strong></span><br>
+                <span style="color:#c0392b;">d(z,&#956;&#8342;)/&#963;&#8342; &#8712; <strong id="hiaBoundReadout">[&hellip;]</strong></span>
               </div>
             </div>
             <p class="is-size-7 mt-2">
@@ -1413,12 +1413,16 @@
           lineMax.setAttribute('x1', sMuk[0]); lineMax.setAttribute('y1', sMuk[1]);
           lineMax.setAttribute('x2', sPmax[0]); lineMax.setAttribute('y2', sPmax[1]);
 
+          // Displayed as perceived isotropic distance (normalized by each prototype's own
+          // sigma, matching d(z_l,p_j) = ||z_l-p_j||/sigma_j from the Distance Function panel
+          // above) even though the HIA circles themselves are still drawn in raw Euclidean
+          // space, since the intersection geometry only holds there.
           var readout = document.getElementById('hiaBoundReadout');
-          if (readout) readout.textContent = '[' + dmin.toFixed(2) + ', ' + dmax.toFixed(2) + ']';
+          if (readout) readout.textContent = '[' + (dmin / sig.muk).toFixed(2) + ', ' + (dmax / sig.muk).toFixed(2) + ']';
           var r1out = document.getElementById('hiaReadoutR1');
-          if (r1out) r1out.textContent = R1.toFixed(2);
+          if (r1out) r1out.textContent = (R1 / sig.mu1).toFixed(2);
           var r2out = document.getElementById('hiaReadoutR2');
-          if (r2out) r2out.textContent = R2.toFixed(2);
+          if (r2out) r2out.textContent = (R2 / sig.mu2).toFixed(2);
         }
 
         function svgPoint(evt) {
